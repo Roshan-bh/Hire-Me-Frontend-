@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#ffff] overflow-x-hidden;
+  }
+  header {
+    @apply md:flex fixed z-40 top-0 items-center space-y-4 md:space-y-0 justify-between transition-all p-4 lg:py-6 lg:px-8 w-full h-fit;
+  }
+}
+@layer components {
+  .navLink {
+    @apply cursor-pointer transition duration-200 hover:text-yellow-300;
+  }
+}
