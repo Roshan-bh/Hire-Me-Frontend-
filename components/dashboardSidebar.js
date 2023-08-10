@@ -8,6 +8,7 @@ import { BsPersonWorkspace } from "react-icons/bs";
 import { BiAddToQueue } from "react-icons/bi";
 import { ImProfile } from "react-icons/im";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 
 export const DashboardSidebar = () => {
   const handleLogout = () => {
@@ -97,8 +98,8 @@ export const DashboardSidebar = () => {
                   </span>
                   <span className="">Delete Profile</span>
                 </Link>
-                <Link
-                  href=""
+                <button
+                  type="button"
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
                   onClick={handleLogout}
                 >
@@ -106,7 +107,7 @@ export const DashboardSidebar = () => {
                     <MdLogout className="inline-block text-3xl mr-1 pb-1 -ms-1" />
                   </span>
                   <span className="">Logout</span>
-                </Link>
+                </button>
               </div>
             </div>
           </div>

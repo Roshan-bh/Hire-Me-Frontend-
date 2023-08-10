@@ -1,5 +1,26 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+
+// const DashboardSidebar = dynamic(
+//   () => import("@/components/dashboardSidebar"),
+//   { ssr: false }
+// );
+// const CompanyProfile = dynamic(
+//   () => import("@/components/dashboard/companyProfile"),
+//   { ssr: false }
+// );
+// const PostJob = dynamic(() => import("@/components/dashboard/postJob"), {
+//   ssr: false,
+// });
+// const ManageJobs = dynamic(() => import("@/components/dashboard/manageJobs"), {
+//   ssr: false,
+// });
+// const DeleteProfile = dynamic(
+//   () => import("@/components/dashboard/deleteProfile"),
+//   { ssr: false }
+// );
+
 import { DashboardSidebar } from "@/components/dashboardSidebar";
 import { CompanyProfile } from "@/components/dashboard/companyProfile";
 import { PostJob } from "@/components/dashboard/postJob";

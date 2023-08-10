@@ -1,32 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRef } from "react";
 import JoditEditor from "jodit-react";
 import "react-datetime/css/react-datetime.css";
 import Datetime from "react-datetime";
 import { Dropdown } from "../subparts/dropdown";
 import Multiselect from "multiselect-react-dropdown";
+import countryData from "./countrydata.json";
+import axios from "axios";
+const baseUrl = "http://localhost:8000/api";
 export const PostJob = () => {
-  const jobSector = [
-    { name: "Backend Developer", id: 1 },
-    { name: "Frontend Developer", id: 2 },
-    { name: "System Analytics", id: 3 },
-    { name: "Project Manager", id: 4 },
-    { name: "UX/UI Designer", id: 5 },
+  const [jobSectors, setJobSectors] = useState([]);
+  const [jobTypes, setJobTypes] = useState([]);
+  const [salaryTypes, setSalaryTypes] = useState([]);
+  const qualifications = [
+    { title: "Secondary Level", id: 1 },
+    { title: "Intermediate Level", id: 2 },
+    { title: "Diploma Course Level", id: 3 },
+    { title: "Graduate Level", id: 4 },
+    { title: "Master Level", id: 5 },
+    { title: "Above Master Degree", id: 6 },
   ];
-  const jobType = [
-    { name: "Full Time", id: 1 },
-    { name: "Part Time", id: 2 },
-    { name: "Per Hour Paid", id: 3 },
-    { name: "Volunteer", id: 4 },
-    { name: "Internship", id: 5 },
+  const experience = [
+    { title: "1 years", id: 1 },
+    { title: "2 years", id: 2 },
+    { title: "3 years", id: 3 },
+    { title: "Above 3 years", id: 4 },
   ];
-  const salaryType = [
-    { name: "Weekly", id: 1 },
-    { name: "Monthly", id: 2 },
-    { name: "Per Hour Paid", id: 3 },
-    { name: "Volunteer", id: 4 },
-    { name: "Internship", id: 5 },
-  ];
+  useEffect(() => {
+    try {
+      axios.get(baseUrl + "/jobsectors/").then((response) => {
+        setJobSectors(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      axios.get(baseUrl + "/jobtypes/").then((response) => {
+        setJobTypes(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      axios.get(baseUrl + "/salarytypes/").then((response) => {
+        setSalaryTypes(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   const [options, setOptions] = useState([
     "Frontend Developer",
     "Backend Developer",
@@ -113,7 +135,7 @@ export const PostJob = () => {
                     Job Type*
                   </label>
                   <Dropdown
-                    value={jobType}
+                    value={jobTypes}
                     name={"Select Job Type"}
                     id="jobType"
                   />
@@ -127,7 +149,7 @@ export const PostJob = () => {
                     Job Sector*
                   </label>
                   <Dropdown
-                    value={jobSector}
+                    value={jobSectors}
                     name={"Select Job Sector"}
                     id="jobSector"
                   />
@@ -161,7 +183,7 @@ export const PostJob = () => {
                     Salary Type*
                   </label>
                   <Dropdown
-                    value={salaryType}
+                    value={salaryTypes}
                     name={"Select Salary Type"}
                     id="salaryType"
                   />
@@ -197,10 +219,24 @@ export const PostJob = () => {
                   />
                 </div>
               </div>
+              <div className="">
+                {" "}
+                <label
+                  class=" text-gray-700 text-sm font-semibold mb-3"
+                  htmlFor="up_img"
+                >
+                  Upload Imgae
+                </label>
+                <input
+                  type="file"
+                  className="rounded-sm shadow-lg w-60 py-2 px-3 bg-white flex hover:outline-none hover:border-none focus:outline-none focus:border-none"
+                  id="up_img"
+                />
+              </div>
             </div>
             <div className="shadow-md p-5 mt-5">
               <h2 className="text-2xl font-medium tracking-wider mb-7">
-                Other InhtmlFormation
+                Other Information
               </h2>
               <div className="flex w-full justify-between mb-7 space-x-2">
                 <div className="">
@@ -212,7 +248,7 @@ export const PostJob = () => {
                     Experience*
                   </label>
                   <Dropdown
-                    value={jobType}
+                    value={experience}
                     name={"Experience"}
                     id="experience"
                   />
@@ -226,7 +262,7 @@ export const PostJob = () => {
                     Qualifications*
                   </label>
                   <Dropdown
-                    value={jobType}
+                    value={qualifications}
                     name={"Qualifications"}
                     id="qualifications"
                   />
@@ -239,7 +275,11 @@ export const PostJob = () => {
                   >
                     Industry*
                   </label>
-                  <Dropdown value={jobType} name={"Industry"} id="industry" />
+                  <Dropdown
+                    value={jobSectors}
+                    name={"Industry"}
+                    id="industry"
+                  />
                 </div>
               </div>
             </div>
@@ -257,12 +297,12 @@ export const PostJob = () => {
                     Country*
                   </label>
                   <Dropdown
-                    value={salaryType}
+                    value={countryData}
                     name={"Country.."}
                     id="country"
                   />
                 </div>
-                <div className="my-3">
+                {/* <div className="my-3">
                   {" "}
                   <label
                     className=" text-gray-700 text-sm font-semibold mb-3"
@@ -270,22 +310,8 @@ export const PostJob = () => {
                   >
                     State*
                   </label>
-                  <Dropdown value={salaryType} name={"State"} id="state" />
-                </div>
-                <div className="my-3">
-                  {" "}
-                  <label
-                    className=" text-gray-700 text-sm font-semibold mb-3"
-                    htmlFor="metro"
-                  >
-                    Metro/submetropolitan*
-                  </label>
-                  <Dropdown
-                    value={salaryType}
-                    name={"Politan City.."}
-                    id="metro"
-                  />
-                </div>
+                  <Dropdown value={salaryTypes} name={"State"} id="state" />
+                </div> */}
                 <div className="my-3">
                   {" "}
                   <label

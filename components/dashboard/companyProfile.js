@@ -5,6 +5,7 @@ import "react-datetime/css/react-datetime.css";
 import Datetime from "react-datetime";
 import { Dropdown } from "../subparts/dropdown";
 import Multiselect from "multiselect-react-dropdown";
+import countryData from "./countrydata.json";
 export const CompanyProfile = () => {
   const salaryType = [
     { name: "Weekly", id: 1 },
@@ -40,10 +41,10 @@ export const CompanyProfile = () => {
           <form action="" method="post">
             <div className="shadow-md p-5">
               <h2 className="text-2xl font-medium tracking-wider mb-7">
-                Basic InhtmlFormation
+                Basic Information
               </h2>
               <div className="flex justify-between items-center w-full">
-                <div className="mb-7 w-2/5">
+                {/* <div className="mb-7 w-2/5">
                   <label
                     className=" text-gray-700 text-sm font-semibold mb-3"
                     htmlFor="firstName"
@@ -56,8 +57,8 @@ export const CompanyProfile = () => {
                     type="text"
                     placeholder="Enter firsr name.."
                   />
-                </div>
-                <div className="mb-7 w-2/5">
+                </div> */}
+                {/* <div className="mb-7 w-2/5">
                   <label
                     className=" text-gray-700 text-sm font-semibold mb-3"
                     htmlFor="lastName"
@@ -70,7 +71,7 @@ export const CompanyProfile = () => {
                     type="text"
                     placeholder="Enter last name.."
                   />
-                </div>
+                </div> */}
               </div>
               <div className="flex justify-between items-center w-full">
                 <div className="mb-7 w-2/5">
@@ -263,12 +264,12 @@ export const CompanyProfile = () => {
                     Country*
                   </label>
                   <Dropdown
-                    value={salaryType}
+                    value={countryData}
                     name={"Country.."}
                     id="country"
                   />
                 </div>
-                <div className="my-3">
+                {/* <div className="my-3">
                   {" "}
                   <label
                     class=" text-gray-700 text-sm font-semibold mb-3"
@@ -277,8 +278,8 @@ export const CompanyProfile = () => {
                     State*
                   </label>
                   <Dropdown value={salaryType} name={"State"} id="state" />
-                </div>
-                <div className="my-3">
+                </div> */}
+                {/* <div className="my-3">
                   {" "}
                   <label
                     class=" text-gray-700 text-sm font-semibold mb-3"
@@ -291,7 +292,7 @@ export const CompanyProfile = () => {
                     name={"Politan City.."}
                     id="metro"
                   />
-                </div>
+                </div> */}
                 <div className="my-3">
                   {" "}
                   <label
@@ -338,20 +339,7 @@ export const CompanyProfile = () => {
                 </div>
               </div>
             </div>
-            <div className="flex mt-5">
-              <input
-                id="checked-checkbox"
-                type="checkbox"
-                value=""
-                className="w-4 h-4 text-white bg-black border-gray-300 rounded focus:ring-black"
-              />
-              <label
-                htmlFor="checked-checkbox"
-                className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                Accept Terms & Conditions
-              </label>
-            </div>
+
             <button
               type="submit"
               className="text-white flex mx-auto rounded-md bg-black px-4 py-2 hover:bg-black/80 mt-7"
