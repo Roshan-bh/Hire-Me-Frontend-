@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const baseUrl = "http://localhost:8000/api/employers/";
 const Signup = () => {
+  const Swal = require("sweetalert2");
   const [employerData, setemployerData] = useState({});
 
   const [employer, setEmployer] = useState(false);
@@ -13,12 +14,6 @@ const Signup = () => {
     "Backend Developer",
     "Content Writer",
     "Web Developer",
-    "a Developer",
-    "v  Developer",
-    "s Developer",
-    "d Writer",
-    "r Developer",
-    "Fullstack Developer",
   ]);
   //chaneg element value
   const handleChange = (event) => {
@@ -43,7 +38,19 @@ const Signup = () => {
     );
     employerFormData.append("terms_condition", true);
     try {
-      axios.post(baseUrl, employerFormData).then((response) => {});
+      axios.post(baseUrl, employerFormData).then((response) => {
+        if (response.status === 200) {
+          Swal.fire({
+            title: "employer register successfully",
+            icon: "success",
+            toast: true,
+            timer: 3000,
+            position: "top-right",
+            timeProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+      });
     } catch (error) {
       console.log(error);
     }

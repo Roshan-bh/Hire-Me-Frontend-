@@ -4,23 +4,86 @@ import axios from "axios";
 import Link from "next/link";
 import Multiselect from "multiselect-react-dropdown";
 
-const baseUrl = "http://localhost:8000/api/employers/";
+const baseUrl = "http://localhost:8000/api/candidates/";
 const Signup = () => {
   //check state for candidate and employee registration.
-  const [candidate, setCandidate] = useState(true);
+  const Swal = require("sweetalert2");
+  const [candidateData, setCandidateData] = useState({});
+  const [status, setStatus] = useState({});
   const [options, setOptions] = useState([
     "Frontend Developer",
     "Backend Developer",
     "Content Writer",
     "Web Developer",
-    "a Developer",
-    "v  Developer",
-    "s Developer",
-    "d Writer",
-    "r Developer",
-    "Fullstack Developer",
   ]);
 
+  //chaneg element value
+  const handleChange = (event) => {
+    setCandidateData({
+      ...candidateData,
+      [event.target.name]: event.target.value,
+    });
+  };
+  //handle file change
+  const handleFileChange = (e) => {
+    setCandidateData({ ...candidateData, [e.target.name]: e.target.files[0] });
+  };
+
+  //submit form data
+  const submitForm = (e) => {
+    e.preventDefault();
+    const candidateFormData = new FormData();
+    candidateFormData.append("first_name", candidateData.first_name);
+    candidateFormData.append("last_name", candidateData.last_name);
+    candidateFormData.append("email", candidateData.email);
+    candidateFormData.append("password", candidateData.password);
+    candidateFormData.append(
+      "confirm_password",
+      candidateData.confirm_password
+    );
+    candidateFormData.append("phone_number", candidateData.phone_number);
+    candidateFormData.append("sectors", candidateData.sectors);
+    candidateFormData.append(
+      "resume",
+      candidateData.resume,
+      candidateData.resume.name
+    );
+    candidateFormData.append("terms_condition", true);
+    try {
+      axios.post(baseUrl, candidateFormData).then((response) => {
+        setStatus({
+          success: "success",
+        });
+        setCandidateData({
+          first_name: "",
+          last_name: "",
+          email: "",
+          password: "",
+          confirm_password: "",
+          phone_number: "",
+          sectors: "",
+          resume: "",
+          terms_conditions: "",
+        });
+        if (response.status === 200) {
+          Swal.fire({
+            title: "Candidate register successfully",
+            icon: "success",
+            toast: true,
+            timer: 3000,
+            position: "bottom-end",
+            timeProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+      });
+    } catch (error) {
+      setStatus({
+        error: "error",
+      });
+      console.log(error);
+    }
+  };
   return (
     <main>
       <div className="mt-[120px]">
@@ -39,7 +102,7 @@ const Signup = () => {
               </p>
             </div>
           </div>
-          <form action="" className="mt-7 space-y-7 w-full">
+          <form onSubmit={submitForm} className="mt-7 space-y-7 w-full">
             <div div className="flex flex-wrap mb-6">
               <div className="w-1/2 pr-2">
                 <input
@@ -48,6 +111,8 @@ const Signup = () => {
                   placeholder="Enter first name"
                   className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3
                   "
+                  onChange={handleChange}
+                  value={candidateData.first_name}
                 />
               </div>
               <div className="w-1/2 pl-2">
@@ -57,6 +122,8 @@ const Signup = () => {
                   placeholder="Enter last name"
                   className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3
                   "
+                  onChange={handleChange}
+                  value={candidateData.last_name}
                 />
               </div>
               <div className="w-1/2 pr-2 mt-7">
@@ -66,6 +133,8 @@ const Signup = () => {
                   placeholder="Enter email address"
                   className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3
                   "
+                  onChange={handleChange}
+                  value={candidateData.email}
                 />
               </div>
               <div className="w-1/2 pl-2 mt-7">
@@ -75,6 +144,8 @@ const Signup = () => {
                   placeholder="Enter password "
                   className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3
                   "
+                  onChange={handleChange}
+                  value={candidateData.password}
                 />
               </div>
               <div className="w-1/2 pr-2 mt-7">
@@ -84,6 +155,8 @@ const Signup = () => {
                   placeholder="Enter confirm password "
                   className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3
                   "
+                  onChange={handleChange}
+                  value={candidateData.confirm_password}
                 />
               </div>
               <div className="w-1/2 pl-2 mt-7">
@@ -93,11 +166,13 @@ const Signup = () => {
                   placeholder="Enter phone number (country code as well)"
                   className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3
                   "
+                  onChange={handleChange}
+                  value={candidateData.phone_number}
                 />
               </div>
 
               <div className="w-1/2 pl-2 mt-7">
-                <Multiselect
+                {/* <Multiselect
                   isObject={false}
                   onRemove={(e) => {}}
                   onSelect={(e) => {}}
@@ -106,20 +181,24 @@ const Signup = () => {
                   closeOnSelect="false"
                   placeholder="--Select sectors--"
                   name="sectors"
+                /> */}
+                <input
+                  type="textarea"
+                  name="sectors"
+                  placeholder="Enter the fields where you have your hands on ... eg: Web Development, etc.."
+                  className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3
+                  "
+                  onChange={handleChange}
+                  value={candidateData.sectors}
                 />
               </div>
               <div className="w-full pl-2 mt-7">
                 <input
                   type="file"
-                  placeholder="upload your resume here"
-                  className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3 text-sm text-grey-500
-                    file:mr-5 file:py-1 file:px-6
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-medium
-                    file:bg-blue-50 file:text-blue-700
-                    hover:file:cursor-pointer hover:file:bg-amber-50
-                    hover:file:text-amber-700
-                  "
+                  className="rounded-sm shadow-lg w-full py-2 px-3 bg-white flex hover:outline-none hover:border-none focus:outline-none focus:border-none"
+                  id="resume"
+                  name="resume"
+                  onChange={handleFileChange}
                 />
               </div>
             </div>
@@ -149,7 +228,7 @@ const Signup = () => {
           <h2 className="text-thin text-blue-600">
             Already Have an Account ?&nbsp;
             <Link
-              href="/login"
+              href="/employer/login"
               className="text-thin text-blue-600 hover:underline"
             >
               Login

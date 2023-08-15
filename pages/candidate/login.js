@@ -5,6 +5,7 @@ import axios from "axios";
 const baseUrl = "http://localhost:8000/api";
 const Login = () => {
   const [employerLoginData, setEmployerLoginData] = useState({});
+  const [errMsg, setErrMsg] = useState();
   //set key value pairs for login details.
   const handleChange = (e) => {
     setEmployerLoginData({
@@ -25,7 +26,11 @@ const Login = () => {
         .then((res) => {
           if (res.data.bool == true) {
             localStorage.setItem("userLoginStatus", true);
+            localStorage.setItem("employer_id", res.data.employer_id);
             window.location.href = "/dashboard";
+          }
+          if (res.data.bool == false) {
+            setErrMsg("Enter Valid Email and Password");
           }
         });
     } catch (err) {
@@ -38,6 +43,8 @@ const Login = () => {
       window.location.href = "/dashboard";
     }
   });
+  //sweetalert2 to display message
+  const Swal = require("sweetalert2");
 
   return (
     <main>
@@ -49,7 +56,7 @@ const Login = () => {
               className="w-full text-white py-5 px-3 rounded shadow-xl cursor-pointer border-2 bg-gray-800 border-black"
             >
               <h2 className="uppercase text-xl font-semibold text-center">
-                Login
+                Candidate Login
               </h2>
               <p className="italic text-md font-medium text-center">
                 Login to get explore.
@@ -94,6 +101,12 @@ const Login = () => {
           <Link href="/" className="text-thin text-blue-600 hover:underline">
             &nbsp;Sign Up
           </Link>
+        </div>
+        <div className="mt-7 w-2/3 md:w-2/4 mx-auto text-center">
+          {" "}
+          {errMsg && (
+            <p className=" m-auto text-danger bg-red-400 p-2">{errMsg}</p>
+          )}
         </div>
       </div>
     </main>

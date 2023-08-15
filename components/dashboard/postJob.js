@@ -12,6 +12,17 @@ export const PostJob = () => {
   const [jobSectors, setJobSectors] = useState([]);
   const [jobTypes, setJobTypes] = useState([]);
   const [salaryTypes, setSalaryTypes] = useState([]);
+  const [industryTypes, setIndustryTypes] = useState([]);
+
+  const [jobSelect, setJobSelect] = useState([]);
+  const [jobSector, setJobSector] = useState([]);
+  const [salaryType, setSalaryType] = useState([]);
+  const [experience, setExperience] = useState();
+  const [qualification, setQualification] = useState();
+  const [cd, setCd] = useState();
+  const [industry, setIndustry] = useState([]);
+  const [jobData, setJobData] = useState({});
+
   const qualifications = [
     { title: "Secondary Level", id: 1 },
     { title: "Intermediate Level", id: 2 },
@@ -20,7 +31,7 @@ export const PostJob = () => {
     { title: "Master Level", id: 5 },
     { title: "Above Master Degree", id: 6 },
   ];
-  const experience = [
+  const experiences = [
     { title: "1 years", id: 1 },
     { title: "2 years", id: 2 },
     { title: "3 years", id: 3 },
@@ -48,6 +59,13 @@ export const PostJob = () => {
     } catch (error) {
       console.log(error);
     }
+    try {
+      axios.get(baseUrl + "/industry/").then((response) => {
+        setIndustryTypes(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
   const [options, setOptions] = useState([
     "Frontend Developer",
@@ -68,33 +86,83 @@ export const PostJob = () => {
     placeholder: "Select date and time..",
     disabled: false,
   };
+  const handleChange = (e) => {
+    setJobData({
+      ...jobData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleFileChange = (e) => {
+    setJobData({ ...jobData, [e.target.name]: e.target.files[0] });
+  };
+  const employer_id = localStorage.getItem("employer_id");
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("title", jobData.title);
+    formData.append("employer", employer_id);
+    formData.append("description", content);
+    formData.append("application_deadline", jobData.application_deadline);
+    formData.append("job_type", jobSelect.id);
+    formData.append("job_sector", jobSector.id);
+    formData.append("required_skills", jobData.required_skills);
+    formData.append("salary_type", salaryType.id);
+    formData.append("salary_minimum", jobData.salary_minimum);
+    formData.append("salary_maximum", jobData.salary_maximum);
+    formData.append("job_image", jobData.up_img, jobData.up_img.name);
+    formData.append("experience", experience);
+    formData.append("qualification", qualification);
+    formData.append("industry", industry.id);
+    formData.append("country", cd);
+    formData.append("city", jobData.city);
+    formData.append("postal_code", jobData.postal_code);
+    formData.append("exact_location", jobData.exact_location);
+    formData.append("terms_conditions", true);
+
+    try {
+      axios
+        .post(baseUrl + "/jobs/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          console.log(response.data);
+          window.location.href = "/dashboard/";
+        });
+    } catch (e) {
+      console.log(e.data);
+    }
+  };
+
   return (
     <>
       {" "}
       <div className=" mt-5 md:ps-5   md:mt-[105px] w-full md:w-3/4">
         <div>
-          <form action="" method="post">
+          <form onSubmit={handleFormSubmit}>
             <div className="shadow-md p-5">
               <h2 className="text-2xl font-medium tracking-wider mb-7">
                 Post a New Job
               </h2>
-              <div class="mb-7">
+              <div className="mb-7">
                 <label
-                  class=" text-gray-700 text-sm font-semibold mb-3"
+                  className=" text-gray-700 text-sm font-semibold mb-3"
                   htmlFor="jobTitle"
                 >
                   Job Title*
                 </label>
                 <input
-                  class="shadow-md border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow-md border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="jobTitle"
+                  name="title"
                   type="text"
                   placeholder="Job Title"
+                  onChange={handleChange}
                 />
               </div>
               <div className="mb-7">
                 <label
-                  class=" text-gray-700 text-sm font-semibold mb-3"
+                  className=" text-gray-700 text-sm font-semibold mb-3"
                   htmlFor="jobDescription"
                 >
                   Job Description*
@@ -112,24 +180,30 @@ export const PostJob = () => {
                 {" "}
                 <div className="">
                   <label
-                    class=" text-gray-700 text-sm font-semibold mb-3"
+                    className=" text-gray-700 text-sm font-semibold mb-3"
                     htmlFor="applicationDeadline"
                   >
                     Application Deadline*
                   </label>
 
                   <p className="shadow-lg">
-                    <Datetime
+                    {/* <Datetime
                       inputProps={inputProps}
                       className=" h-10 p-2"
                       id="applicationDeadline"
+                      onChange={handleChange}
+                    /> */}
+                    <input
+                      type="date"
+                      name="application_deadline"
+                      onChange={handleChange}
                     />
                   </p>
                 </div>
                 <div className="">
                   {" "}
                   <label
-                    class=" text-gray-700 text-sm font-semibold mb-3"
+                    className=" text-gray-700 text-sm font-semibold mb-3"
                     htmlFor="jobType"
                   >
                     Job Type*
@@ -138,12 +212,14 @@ export const PostJob = () => {
                     value={jobTypes}
                     name={"Select Job Type"}
                     id="jobType"
+                    setData={setJobSelect}
                   />
+                  {jobSelect.id}
                 </div>
                 <div className="">
                   {" "}
                   <label
-                    class=" text-gray-700 text-sm font-semibold mb-3"
+                    className=" text-gray-700 text-sm font-semibold mb-3"
                     htmlFor="jobSector"
                   >
                     Job Sector*
@@ -152,32 +228,31 @@ export const PostJob = () => {
                     value={jobSectors}
                     name={"Select Job Sector"}
                     id="jobSector"
+                    setData={setJobSector}
                   />
                 </div>
+                {jobSector.id}
               </div>
               <div className="mb-7">
                 <label
-                  class=" text-gray-700 text-sm font-semibold mb-3"
-                  htmlFor="requiredSkills"
+                  className=" text-gray-700 text-sm font-semibold mb-3"
+                  htmlFor="required_skills"
                 >
                   Required Skills*
                 </label>
-                <Multiselect
-                  isObject={false}
-                  onRemove={(e) => {}}
-                  onSelect={(e) => {}}
-                  options={options}
-                  showCheckbox
-                  closeOnSelect="false"
-                  placeholder="--Select sectors--"
-                  id="requiredSkills"
+                <input
+                  className="shadow-md border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  name="required_skills"
+                  type="text"
+                  placeholder="Requirred Skills.."
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex w-full justify-between mb-7 space-x-2">
                 <div className="">
                   {" "}
                   <label
-                    class=" text-gray-700 text-sm font-semibold mb-3"
+                    className=" text-gray-700 text-sm font-semibold mb-3"
                     htmlFor="salaryType"
                   >
                     Salary Type*
@@ -186,12 +261,14 @@ export const PostJob = () => {
                     value={salaryTypes}
                     name={"Select Salary Type"}
                     id="salaryType"
+                    setData={setSalaryType}
                   />
                 </div>
+                {salaryType.id}
                 <div className="">
                   {" "}
                   <label
-                    class=" text-gray-700 text-sm font-semibold mb-3"
+                    className=" text-gray-700 text-sm font-semibold mb-3"
                     htmlFor="minimum"
                   >
                     Minimum*
@@ -200,13 +277,14 @@ export const PostJob = () => {
                     type="number"
                     className="rounded-sm shadow-lg w-60 py-2 px-3 bg-white flex items-center hover:outline-none hover:border-none focus:outline-none focus:border-none"
                     min={0}
-                    id="minimum"
+                    name="salary_minimum"
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="">
                   {" "}
                   <label
-                    class=" text-gray-700 text-sm font-semibold mb-3"
+                    className=" text-gray-700 text-sm font-semibold mb-3"
                     htmlFor="maximum"
                   >
                     Maximum*
@@ -215,14 +293,15 @@ export const PostJob = () => {
                     type="number"
                     className="rounded-sm shadow-lg w-60 py-2 px-3 bg-white flex hover:outline-none hover:border-none focus:outline-none focus:border-none"
                     min={0}
-                    id="maximum"
+                    name="salary_maximum"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
               <div className="">
                 {" "}
                 <label
-                  class=" text-gray-700 text-sm font-semibold mb-3"
+                  className=" text-gray-700 text-sm font-semibold mb-3"
                   htmlFor="up_img"
                 >
                   Upload Imgae
@@ -231,6 +310,8 @@ export const PostJob = () => {
                   type="file"
                   className="rounded-sm shadow-lg w-60 py-2 px-3 bg-white flex hover:outline-none hover:border-none focus:outline-none focus:border-none"
                   id="up_img"
+                  name="up_img"
+                  onChange={handleFileChange}
                 />
               </div>
             </div>
@@ -248,9 +329,10 @@ export const PostJob = () => {
                     Experience*
                   </label>
                   <Dropdown
-                    value={experience}
+                    value={experiences}
                     name={"Experience"}
                     id="experience"
+                    setData={setExperience}
                   />
                 </div>
                 <div className="">
@@ -265,6 +347,7 @@ export const PostJob = () => {
                     value={qualifications}
                     name={"Qualifications"}
                     id="qualifications"
+                    setData={setQualification}
                   />
                 </div>
                 <div className="">
@@ -276,11 +359,13 @@ export const PostJob = () => {
                     Industry*
                   </label>
                   <Dropdown
-                    value={jobSectors}
+                    value={industryTypes}
                     name={"Industry"}
                     id="industry"
+                    setData={setIndustry}
                   />
                 </div>
+                {industry.id}
               </div>
             </div>
             <div className="shadow-md p-5 mt-5">
@@ -300,6 +385,7 @@ export const PostJob = () => {
                     value={countryData}
                     name={"Country.."}
                     id="country"
+                    setData={setCd}
                   />
                 </div>
                 {/* <div className="my-3">
@@ -325,6 +411,8 @@ export const PostJob = () => {
                     className="rounded-sm shadow-lg w-60 py-2 px-3 bg-white flex items-center hover:outline-none hover:border-none focus:outline-none focus:border-none"
                     placeholder="Bypass Road 04, Bharatpur.."
                     id="city"
+                    name="city"
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="my-3">
@@ -339,6 +427,8 @@ export const PostJob = () => {
                     type="text"
                     className="rounded-sm shadow-lg w-60 py-2 px-3 bg-white flex items-center hover:outline-none hover:border-none focus:outline-none focus:border-none"
                     id="postalCode"
+                    name="postal_code"
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="my-3">
@@ -354,6 +444,8 @@ export const PostJob = () => {
                     className="rounded-sm shadow-lg w-60 py-2 px-3 bg-white flex items-center hover:outline-none hover:border-none focus:outline-none focus:border-none"
                     placeholder="Bypass Road 04, Bharatpur.."
                     id="exactLocation"
+                    name="exact_location"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -363,7 +455,8 @@ export const PostJob = () => {
                 id="checked-checkbox"
                 type="checkbox"
                 value=""
-                class="w-4 h-4 text-white bg-black border-gray-300 rounded focus:ring-black"
+                onChange={handleChange}
+                className="w-4 h-4 text-white bg-black border-gray-300 rounded focus:ring-black"
               />
               <label
                 htmlFor="checked-checkbox"

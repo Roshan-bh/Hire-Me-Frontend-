@@ -13,7 +13,8 @@ export const Navbar = () => {
   //State for navbar open and closed.
   const [open, setOpen] = useState(false);
 
-  const [signupOpen, setsignupOpen] = useState(false);
+  const [signupOpen, setSignupOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
   const [userLoginStatus, setUserLoginStatus] = useState(false);
 
   //State for navbar scrolled functionality.
@@ -88,7 +89,7 @@ export const Navbar = () => {
               <div>
                 <button
                   className="flex navLink text-center bg-slate-300/60 rounded-md px-3 py-3 hover:bg-slate-400 text-lg"
-                  onClick={() => setsignupOpen((prev) => !prev)}
+                  onClick={() => setSignupOpen((prev) => !prev)}
                 >
                   <div>
                     <BiUserCircle className="w-5 h-5 mt-1 mr-1" />
@@ -99,13 +100,15 @@ export const Navbar = () => {
                   <div className="bg-white py-2 shadow-md">
                     <div
                       className="text-md px-3 py-2 hover:bg-slate-400 hover:rounded-sm "
-                      onClick={() => setsignupOpen((prev) => !prev)}
+                      onClick={() => setSignupOpen((prev) => !prev)}
                     >
                       <Link
-                        href={{
-                          pathname: "/employer/[layout]",
-                          query: { layout: "signup" },
-                        }}
+                        href="/employer/signup"
+                        replace
+                        // href={{
+                        //   pathname: "/employer/[layout]",
+                        //   query: { layout: "signup" },
+                        // }}
                       >
                         {" "}
                         Employer
@@ -113,13 +116,15 @@ export const Navbar = () => {
                     </div>
                     <div
                       className="text-md px-3 py-2 hover:bg-slate-400 hover:rounded-sm "
-                      onClick={() => setsignupOpen((prev) => !prev)}
+                      onClick={() => setSignupOpen((prev) => !prev)}
                     >
                       <Link
-                        href={{
-                          pathname: "/candidate/[layout]",
-                          query: { layout: "signup" },
-                        }}
+                        href="/candidate/signup"
+                        replace
+                        // href={{
+                        //   pathname: "/candidate/[layout]",
+                        //   query: { layout: "signup" },
+                        // }}
                       >
                         {" "}
                         Candidate
@@ -128,14 +133,62 @@ export const Navbar = () => {
                   </div>
                 )}
               </div>
-              <Link href="/login">
+              <div>
+                <button
+                  type="button"
+                  className="flex navLink text-center bg-slate-300/60 rounded-md px-3 py-3 hover:bg-slate-400 text-lg"
+                  onClick={() => setLoginOpen((prev) => !prev)}
+                >
+                  <div>
+                    <BiUserCircle className="w-5 h-5 mt-1 mr-1" />
+                  </div>
+                  <span>Login</span>
+                </button>
+                {loginOpen && (
+                  <div className="bg-white py-2 shadow-md">
+                    <div
+                      className="text-md px-3 py-2 hover:bg-slate-400 hover:rounded-sm "
+                      onClick={() => setLoginOpen((prev) => !prev)}
+                    >
+                      <Link
+                        href="/employer/login"
+                        // href={{
+                        //   pathname: "/employer/[layout]",
+                        //   query: { layout: "login" },
+                        // }}
+                        replace
+                      >
+                        {" "}
+                        Employer
+                      </Link>
+                    </div>
+                    <div
+                      className="text-md px-3 py-2 hover:bg-slate-400 hover:rounded-sm "
+                      onClick={() => setLoginOpen((prev) => !prev)}
+                    >
+                      <Link
+                        href="/candidate/login"
+                        // href={{
+                        //   pathname: "/candidate/[layout]",
+                        //   query: { layout: "login" },
+                        // }}
+                        replace
+                      >
+                        {" "}
+                        Candidate
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {/* <Link href="/login">
                 <button className="flex navLink text-center bg-slate-300/60 rounded-md px-2 py-3 hover:bg-slate-400 text-lg h-[56px]">
                   <div>
                     <BiLogIn className="w-5 h-5 mt-1 mr-1 " />
                   </div>
                   <span>Login</span>
                 </button>
-              </Link>
+              </Link> */}
             </>
           )}
 

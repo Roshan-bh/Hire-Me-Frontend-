@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import axios from "axios";
 
+const baseUrl = "http://localhost:8000/api";
 export const FeaturedJobs = () => {
+  const [jobData, setJobData] = useState([]);
+  useEffect(() => {
+    try {
+      axios.get(baseUrl + "/jobs/?result=4").then((response) => {
+        setJobData(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  console.log(jobData);
   return (
     <main>
       <div className=" text-center">
@@ -17,58 +30,44 @@ export const FeaturedJobs = () => {
       </div>
       <div className="flex items-center justify-center py-5">
         <div className="grid grid-cols-6 lg:grid-cols-12 h-auto p-2 text-center ">
-          <motion.div
-            className="col-span-6 mx-3 p-8 shadow-xl bg-slate-100 lg:mx-16 mb-10"
-            whileHover={{ scale: 1.1 }}
-          >
-            <Link
-              href="jobs/frontend-developer"
-              className="cursor-pointer flex "
-            >
-              <Image
-                src="/images/8fi.jpg"
-                width={90}
-                height={90}
-                alt=""
-                className="p-2 shadow-md rounded-md object-contain"
-              />
-              <p className=" mx-3 border-l-2 border-black/30"></p>
-              <div className="mx-5 text-left">
-                <h2 className=" text-2xl font-semibold">Frontend Developer</h2>
-                <p className="text-lg font-[18px]">
-                  @ Sundrive Nepal Pvt. Ltd.
-                </p>
-                <small className="text-sm">
-                  Published 4 days ago Chitwan, Bharatpur-04, Nepal
-                </small>
+          {/* {jobData &&
+            jobData.map((item, index) => (
+              <div>
+                <motion.div
+                  className="col-span-6 mx-3 p-8 shadow-xl bg-slate-100 lg:mx-16 mb-10"
+                  whileHover={{ scale: 1.1 }}
+                  key={index}
+                >
+                  <Link
+                    href={`jobs/${item.id}`}
+                    className="cursor-pointer flex "
+                  >
+                    <div className="relative w-[100px] h-[100px]">
+                      {" "}
+                      <Image
+                        src={item.job_image}
+                        fill
+                        alt={item.title}
+                        className="p-2 shadow-md rounded-md object-contain"
+                      />
+                    </div>
+
+                    <p className=" mx-3 border-l-2 border-black/30"></p>
+                    <div className="mx-5 text-left">
+                      <h2 className=" text-2xl font-semibold">
+                        {item.job_sector}
+                      </h2>
+                      <p className="text-lg font-[18px]">@ {item.title}</p>
+                      <small className="text-sm">
+                        <span>{item.exact_location}</span>
+                      </small>
+                    </div>
+                  </Link>
+                </motion.div>
               </div>
-            </Link>
-          </motion.div>
-          <motion.div
-            className="col-span-6 p-8 mx-3 shadow-xl bg-slate-100 lg:mx-16 mb-10"
-            whileHover={{ scale: 1.1 }}
-          >
-            <Link href="jobs/content-writer" className="cursor-pointer flex">
-              <Image
-                src="/images/8fi.jpg"
-                width={90}
-                height={90}
-                alt=""
-                className="p-2 shadow-md rounded-md object-contain"
-              />
-              <p className=" mx-3 border-l-2 border-black/30"></p>
-              <div className="mx-5 text-left">
-                <h2 className=" text-2xl font-semibold">Content Writer</h2>
-                <p className="text-lg font-[18px]">
-                  @ Sundrive Nepal Pvt. Ltd.
-                </p>
-                <small className="text-sm">
-                  Published 4 days ago Chitwan, Bharatpur-04, Nepal
-                </small>
-              </div>
-            </Link>
-          </motion.div>
-          <motion.div
+            ))} */}
+
+          {/* <motion.div
             className="col-span-6 p-8 mx-3 shadow-xl bg-slate-100 lg:mx-16 mb-10"
             whileHover={{ scale: 1.1 }}
           >
@@ -92,40 +91,7 @@ export const FeaturedJobs = () => {
               </div>
             </Link>
           </motion.div>
-          <motion.div
-            className="col-span-6 p-8 mx-3 shadow-xl bg-slate-100 lg:mx-16 mb-10"
-            whileHover={{ scale: 1.1 }}
-          >
-            <Link href="jobs/ui-ux-designer" className="cursor-pointer flex">
-              <Image
-                src="/images/8fi.jpg"
-                width={90}
-                height={90}
-                alt=""
-                className="p-2 shadow-md rounded-md object-contain"
-              />
-              <p className=" mx-3 border-l-2 border-black/30"></p>
-              <div className="mx-5 text-left">
-                <h2 className=" text-2xl font-semibold">UI/UX Designer</h2>
-                <p className="text-lg font-[18px]">
-                  @ Sundrive Nepal Pvt. Ltd.
-                </p>
-                <small className="text-sm">
-                  Published 4 days ago Chitwan, Bharatpur-04, Nepal
-                </small>
-              </div>
-            </Link>
-          </motion.div>
-          <motion.div
-            className="col-span-12 p-6 mx-auto mb-10"
-            whileHover={{ scale: 1.1 }}
-          >
-            <Link href="jobs" className="cursor-pointer flex ">
-              <button className="bg-amber-400 py-3 px-7  text-xl rounded-md hover:bg-amber-500 text-white hover:underline">
-                Browse More
-              </button>
-            </Link>
-          </motion.div>
+        */}
         </div>
       </div>
     </main>

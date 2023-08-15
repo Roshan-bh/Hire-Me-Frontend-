@@ -8,10 +8,17 @@ import { BsPersonWorkspace } from "react-icons/bs";
 import { BiAddToQueue } from "react-icons/bi";
 import { ImProfile } from "react-icons/im";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 
 export const DashboardSidebar = () => {
+  const Swal = require("sweetalert2");
   const handleLogout = () => {
+    Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to Logout ?",
+      icon: "info",
+      confirmButtonText: "Continue",
+      showCancelButton: true,
+    });
     localStorage.removeItem("userLoginStatus");
     window.location.href = "/login";
   };
@@ -42,7 +49,9 @@ export const DashboardSidebar = () => {
               </div>
               <div id="menu" className="flex flex-col space-y-2">
                 <Link
-                  href={{ pathname: "/dashboard" }}
+                  // href={{ pathname: "/dashboard" }}
+                  href="/dashboard"
+                  replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out"
                 >
                   <span>
@@ -51,10 +60,12 @@ export const DashboardSidebar = () => {
                   <span className="">Dashboard</span>
                 </Link>
                 <Link
-                  href={{
-                    pathname: "/dashboard/[layout]",
-                    query: { layout: "companyProfile" },
-                  }}
+                  // href={{
+                  //   pathname: "/dashboard/[layout]",
+                  //   query: { layout: "companyProfile" },
+                  // }}
+                  href="/dashboard/companyProfile"
+                  replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
                 >
                   <span>
@@ -63,10 +74,12 @@ export const DashboardSidebar = () => {
                   <span className="">Company Profile</span>
                 </Link>
                 <Link
-                  href={{
-                    pathname: "/dashboard/[layout]",
-                    query: { layout: "postJob" },
-                  }}
+                  // href={{
+                  //   pathname: "/dashboard/[layout]",
+                  //   query: { layout: "postJob" },
+                  // }}
+                  href="/dashboard/postJob"
+                  replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
                 >
                   <span>
@@ -75,10 +88,12 @@ export const DashboardSidebar = () => {
                   <span className="">Post a New Job</span>
                 </Link>
                 <Link
-                  href={{
-                    pathname: "/dashboard/[layout]",
-                    query: { layout: "manageJobs" },
-                  }}
+                  // href={{
+                  //   pathname: "/dashboard/[layout]",
+                  //   query: { layout: "manageJobs" },
+                  // }}
+                  href="/dashboard/manageJobs"
+                  replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
                 >
                   <span>
@@ -87,10 +102,12 @@ export const DashboardSidebar = () => {
                   <span className="">Manage Jobs</span>
                 </Link>
                 <Link
-                  href={{
-                    pathname: "/dashboard/[layout]",
-                    query: { layout: "deleteProfile" },
-                  }}
+                  // href={{
+                  //   pathname: "/dashboard/[layout]",
+                  //   query: { layout: "deleteProfile" },
+                  // }}
+                  href="/dashboard/deleteProfile"
+                  replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
                 >
                   <span>
