@@ -16,6 +16,8 @@ export const Navbar = () => {
   const [signupOpen, setSignupOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [userLoginStatus, setUserLoginStatus] = useState(false);
+  const [employerLoginStatus, setEmployerLoginStatus] = useState(false);
+  const [candidateLoginStatus, setCandidateLoginStatus] = useState(false);
 
   //State for navbar scrolled functionality.
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,7 +25,12 @@ export const Navbar = () => {
   useEffect(() => {
     let value;
     value = localStorage.getItem("userLoginStatus");
+    const employer_status = localStorage.getItem("employerLoginStatus");
+    const candidate_status = localStorage.getItem("candidateLoginStatus");
     setUserLoginStatus(value);
+    setEmployerLoginStatus(employer_status);
+    setCandidateLoginStatus(candidate_status);
+
     const handleScroll = () => {
       if (window.scrollY > 0) {
         setIsScrolled(true);
@@ -193,14 +200,57 @@ export const Navbar = () => {
           )}
 
           {userLoginStatus == "true" && (
-            <Link href="/dashboard">
-              <button className="flex navLink text-center bg-slate-300/60 rounded-md px-2 py-3 hover:bg-slate-400 text-lg h-[56px]">
+            <div>
+              <button
+                className="flex navLink text-center bg-slate-300/60 rounded-md px-3 py-3 hover:bg-slate-400 text-lg"
+                onClick={() => setSignupOpen((prev) => !prev)}
+              >
                 <div>
-                  <BiLogIn className="w-5 h-5 mt-1 mr-1 " />
+                  <BiUserCircle className="w-5 h-5 mt-1 mr-1" />
                 </div>
                 <span>Dashboard</span>
               </button>
-            </Link>
+              {signupOpen && (
+                <div className="bg-white py-2 shadow-md">
+                  {employerLoginStatus == "true" && (
+                    <div
+                      className="text-md px-3 py-2 hover:bg-slate-400 hover:rounded-sm "
+                      onClick={() => setSignupOpen((prev) => !prev)}
+                    >
+                      <Link
+                        href="/dashboard"
+                        replace
+                        // href={{
+                        //   pathname: "/employer/[layout]",
+                        //   query: { layout: "signup" },
+                        // }}
+                      >
+                        {" "}
+                        Employer
+                      </Link>
+                    </div>
+                  )}
+                  {candidateLoginStatus == "true" && (
+                    <div
+                      className="text-md px-3 py-2 hover:bg-slate-400 hover:rounded-sm "
+                      onClick={() => setSignupOpen((prev) => !prev)}
+                    >
+                      <Link
+                        href="/dashboard"
+                        replace
+                        // href={{
+                        //   pathname: "/candidate/[layout]",
+                        //   query: { layout: "signup" },
+                        // }}
+                      >
+                        {" "}
+                        Candidate
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </header>

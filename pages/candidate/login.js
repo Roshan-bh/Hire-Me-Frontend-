@@ -4,12 +4,12 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:8000/api";
 const Login = () => {
-  const [employerLoginData, setEmployerLoginData] = useState({});
+  const [candidateLoginData, setCandidateLoginData] = useState({});
   const [errMsg, setErrMsg] = useState();
   //set key value pairs for login details.
   const handleChange = (e) => {
-    setEmployerLoginData({
-      ...employerLoginData,
+    setCandidateLoginData({
+      ...candidateLoginData,
       [e.target.name]: e.target.value,
     });
   };
@@ -17,16 +17,22 @@ const Login = () => {
   //submitting the form to get login
   const submitForm = (e) => {
     e.preventDefault();
-    const employerLoginFormData = new FormData();
-    employerLoginFormData.append("email", employerLoginData.email);
-    employerLoginFormData.append("password", employerLoginData.password);
+    const candidateLoginFormData = new FormData();
+    candidateLoginFormData.append("email", candidateLoginData.email);
+    candidateLoginFormData.append("password", candidateLoginData.password);
     try {
       axios
-        .post(baseUrl + "/user_login/", employerLoginFormData)
+        .post(baseUrl + "/candidate_login/", candidateLoginFormData)
         .then((res) => {
+          setCandidateLoginData({
+            email: "",
+            password: "",
+          });
           if (res.data.bool == true) {
             localStorage.setItem("userLoginStatus", true);
-            localStorage.setItem("employer_id", res.data.employer_id);
+            localStorage.setItem("candidateLoginStatus", true);
+            localStorage.setItem("employerLoginStatus", false);
+            localStorage.setItem("candidate_id", res.data.candidate_id);
             window.location.href = "/dashboard";
           }
           if (res.data.bool == false) {
@@ -39,7 +45,8 @@ const Login = () => {
   };
   useEffect(() => {
     const userLoginStatus = localStorage.getItem("userLoginStatus");
-    if (userLoginStatus == "true") {
+    const candidateLoginStatus = localStorage.getItem("candidateLoginStatus");
+    if (candidateLoginStatus == "true") {
       window.location.href = "/dashboard";
     }
   });
@@ -72,7 +79,7 @@ const Login = () => {
               placeholder="Enter email address"
               className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3
                   "
-              value={employerLoginData.email}
+              value={candidateLoginData.email}
             />
 
             <input
@@ -84,7 +91,7 @@ const Login = () => {
               placeholder="Enter password"
               className="w-full bg-white hover:border-gray-300 focus:outline-none focus:border-gray-400 text-black border-2 rounded-sm py-2 px-3
                   "
-              value={employerLoginData.password}
+              value={candidateLoginData.password}
             />
 
             <button
@@ -98,7 +105,10 @@ const Login = () => {
           <Link href="" className="text-thin text-blue-500 hover:underline">
             Forgot Password |
           </Link>
-          <Link href="/" className="text-thin text-blue-600 hover:underline">
+          <Link
+            href="/candidate/signup"
+            className="text-thin text-blue-600 hover:underline"
+          >
             &nbsp;Sign Up
           </Link>
         </div>

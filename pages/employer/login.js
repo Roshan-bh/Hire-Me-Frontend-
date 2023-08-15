@@ -24,8 +24,14 @@ const Login = () => {
       axios
         .post(baseUrl + "/employer_login/", employerLoginFormData)
         .then((res) => {
+          setEmployerLoginData({
+            email: "",
+            password: "",
+          });
           if (res.data.bool == true) {
             localStorage.setItem("userLoginStatus", true);
+            localStorage.setItem("employerLoginStatus", true);
+            localStorage.setItem("candidate_status", false);
             localStorage.setItem("employer_id", res.data.employer_id);
             window.location.href = "/dashboard";
           }
@@ -39,7 +45,8 @@ const Login = () => {
   };
   useEffect(() => {
     const userLoginStatus = localStorage.getItem("userLoginStatus");
-    if (userLoginStatus == "true") {
+    const employerLoginStatus = localStorage.getItem("employerLoginStatus");
+    if (employerLoginStatus == "true") {
       window.location.href = "/dashboard";
     }
   });
@@ -98,7 +105,10 @@ const Login = () => {
           <Link href="" className="text-thin text-blue-500 hover:underline">
             Forgot Password |
           </Link>
-          <Link href="/" className="text-thin text-blue-600 hover:underline">
+          <Link
+            href="/employer/signup"
+            className="text-thin text-blue-600 hover:underline"
+          >
             &nbsp;Sign Up
           </Link>
         </div>

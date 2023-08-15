@@ -20,7 +20,9 @@ export const DashboardSidebar = () => {
       showCancelButton: true,
     });
     localStorage.removeItem("userLoginStatus");
-    window.location.href = "/login";
+    localStorage.removeItem("employerLoginStatus");
+    localStorage.removeItem("candidateLoginStatus");
+    window.location.href = "/employer/login";
   };
   return (
     <>
