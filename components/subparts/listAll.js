@@ -18,9 +18,9 @@ export const ListAll = (props) => {
     { name: "Restaurants" },
     { name: "IOS Development" },
   ];
+  console.log(props.data.fetchedData);
   return (
     <>
-      {/* {console.log(fetchedData)} */}
       <div className="mt-[80px]">
         <div className="mt-24 p-9 md:p-20 md:mx-20 lg:mx-32">
           <Search />
@@ -41,10 +41,11 @@ export const ListAll = (props) => {
                   className="shadow-xl border-2 mt-3 flex flex-wrap p-4 mx-2"
                   key={index}
                 >
-                  <div className="w-full md:w-1/6 justify-center inline-flex lg:border-r-2 lg:border-gray-400 ">
+                  <div className="relative w-[120px] h-[120px] justify-center inline-flex lg:border-r-2 lg:border-gray-400 ">
                     <Image
-                      src="/images/9fi.jpg"
-                      // src={item.job_image.url}
+                      src={
+                        item.job_image ? item.job_image : item.internship_image
+                      }
                       width={80}
                       height={80}
                       className="p-3 rounded-sm border border-r-2"
@@ -56,8 +57,8 @@ export const ListAll = (props) => {
                       {/* SEO intern for BusyFood website */}
                       {item.title}
                       <p className="text-sm font-medium text-gray-400 capitalize">
-                        {/* @ Kukura tech and research Pvt. Ltd. */}
-                        {item.description}
+                        {/* @ Kukura tech and research Pvt. Ltd. */}@{" "}
+                        {item.employer.organization_name}
                       </p>
                     </h4>
 
@@ -72,14 +73,18 @@ export const ListAll = (props) => {
                     <div className="flex">
                       <h4 className="uppercase text-sm font-semibold text-white bg-green-600 text-center p-2 rounded-sm flex">
                         {/* work from home */}
-                        {item.job_type.title}
+                        {item.job_type
+                          ? item.job_type.title
+                          : item.internship_type.title}
                       </h4>
                       <span className="text-2xl text-red-400 ml-2">
                         <BiHeartCircle className="inline-block" />
                       </span>
                       <h4 className=" ml-2 capitalize text-sm font-thin text-gray-700 bg-amber-300 text-center py-2 px-4  flex rounded-full tracking-wider">
                         {/* web development */}
-                        {item.job_sector}
+                        {item.job_sector
+                          ? item.job_sector.title
+                          : item.internship_sector.title}
                       </h4>
                     </div>
                   </div>

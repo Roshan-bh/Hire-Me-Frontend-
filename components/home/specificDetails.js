@@ -15,16 +15,28 @@ const SpecificDetails = (props) => {
   const [userLoginStatus, setUserLoginStatus] = useState();
   const [applyStatus, setApplyStatus] = useState();
   // console.log(props.data.relatedData);
-  const job_id = props.data.jobId;
+  const data_id = props.data.dataId;
+  const apply = props.data.apply;
+  if (typeof window !== "undefined") {
+    // Perform localStorage action
+    const candidate_id = localStorage.getItem("candidate_id");
+  }
 
   //useEffect
   useEffect(() => {
-    const candidate_id = localStorage.getItem("candidate_id");
-
+    // const candidate_id = localStorage.getItem("candidate_id");
     //fetch apply status
     try {
       axios
-        .get(baseUrl + "/fetch-apply-status/" + candidate_id + "/" + 4)
+        .get(
+          baseUrl +
+            "/fetch-apply-status-" +
+            apply +
+            "/" +
+            candidate_id +
+            "/" +
+            2
+        )
         .then((response) => {
           console.log(response.data);
           if (response.data.bool === "true") {
@@ -46,11 +58,11 @@ const SpecificDetails = (props) => {
     e.preventDefault();
     const candidate_id = localStorage.getItem("candidate_id");
     const formData = new FormData();
-    formData.append("job", job_id);
+    formData.append("job", data_id);
     formData.append("candidate", candidate_id);
     try {
       axios
-        .post(baseUrl + "/candidate-job-apply/", formData, {
+        .post(baseUrl + "/candidate-" + apply + "-apply/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -58,7 +70,7 @@ const SpecificDetails = (props) => {
         .then((response) => {
           if (response.data.status === 200 || response.data.status === 201) {
             Swal.fire({
-              title: "Job Applied Successfully.",
+              title: "Applied Successfully.",
               icon: "success",
               toast: true,
               time: 3000,
@@ -72,24 +84,24 @@ const SpecificDetails = (props) => {
       console.log(error);
     }
   };
+  console.log(props.data.Details);
   return (
     <main className="mt-[82px]">
       <div className="w-screen h-[320px] bg-gray-400/60"></div>
       <div className="-mt-32 grid grid-cols-5 md:border-2 md:border-solid shadow-xl mx-[80px] md:mx-[140px] lg:mx-[130px] divide-x divide-black/50  bg-white">
         <div className="left col-span-5  lg:col-span-1 p-9 flex items-center justify-center">
           <Image
-            src="/images/8fi.jpg"
+            src={item.job_image ? item.job_image : item.internship_image}
             width={150}
             height={150}
             className="shadow-sm rounded-sm"
             alt=""
           />
         </div>
+
         <div className="right col-span-5 md:col-span-4 py-3 pl-9 flex flex-col justify-between space-y-4">
           {/* <h3 className="font-semibold text-3xl">Frontend Developer</h3> */}
-          <h3 className="font-semibold text-3xl">
-            {props.data.jobSector.title}
-          </h3>
+          <h3 className="font-semibold text-3xl">{props.data.Sector.title}</h3>
           <h3 className="font-semibold text-3xl"></h3>
           <h2>
             {/* <span className="text-sm bg-green-500 font-[23px] p-2 rounded-sm">
@@ -98,36 +110,35 @@ const SpecificDetails = (props) => {
             </span> */}
             <span className="text-sm bg-green-500 font-[23px] p-2 rounded-sm">
               <VscVerified className="inline-block text-lg mb-[2px]" />
-              {props.data.jobDetails.title}
+              {props.data.Details.title}
             </span>
             {/* <span className="text-lg  font-medium">&nbsp; @ {Data.title}</span> */}
             <span className="text-sm italic text-red-600">
               &nbsp; published 4 days ago
             </span>
             <span className="font-medium text-md">
-              &nbsp; in {props.data.jobSector.title}
+              &nbsp; in {props.data.Sector.title}
             </span>
           </h2>
           <h2 className="text-lg font-medium">
             <GoLocation className="inline-block" />
             <span className="capitalize">
-              &nbsp; {props.data.jobDetails.exact_location}{" "}
+              &nbsp; {props.data.Details.exact_location}{" "}
             </span>
           </h2>
           <h2 className="flex flex-col md:flex-row">
             <span className="capitalize font-semibold">
               <GoCalendar className="inline-block mb-1 text-red-600" /> post
-              date : {props.data.jobDetails.created_at}
+              date : {props.data.Details.created_at}
             </span>
             <span className="capitalize font-semibold md:mx-7">
               <GoCalendar className="inline-block mb-1 text-red-600" /> apply
-              before : {props.data.jobDetails.application_deadline}
+              before : {props.data.Details.application_deadline}
             </span>
             <span className="capitalize font-semibold">
               <BiMoneyWithdraw className="inline-block mb-1 text-red-600 text-lg" />
-              &nbsp;salary range : Rs.{props.data.jobDetails.salary_minimum}-
-              Rs.
-              {props.data.jobDetails.salary_maximum}
+              &nbsp;salary range : Rs.{props.data.Details.salary_minimum}- Rs.
+              {props.data.Details.salary_maximum}
             </span>
           </h2>
           <h2>
@@ -157,10 +168,10 @@ const SpecificDetails = (props) => {
               Job Description
             </h2>
             <h2 className="text-xl font-semibold mb-2">
-              {props.data.jobDetails.title}
+              {props.data.Details.title}
             </h2>
             <h3 className="text-lg font font-semibold"># About Company</h3>
-            <p>{props.data.jobDetails.description}</p>
+            <p>{props.data.Details.description}</p>
             {/* <p className="font-medium mt-2 mb-7">
               -- Stipend Amount: 10,000 Per Month --
             </p> */}
@@ -219,7 +230,7 @@ const SpecificDetails = (props) => {
               </h3>
               <div className="flex space-x-4">
                 <h4 className="capitalize text-sm font-medium text-white bg-green-500 text-center p-2 rounded-md flex">
-                  {props.data.jobDetails.required_skills}
+                  {props.data.Details.required_skills}
                 </h4>
                 <h4 className="capitalize text-sm font-medium text-white bg-green-500 text-center p-2 rounded-md flex">
                   on page seo
@@ -285,13 +296,13 @@ const SpecificDetails = (props) => {
                   />
                 </div>
                 <div className="md:w-5/6 w-full flex flex-col justify-between pl-9 text-left">
-                  <Link href={`/${props.data.type}/${item.pk}`} replace>
+                  <Link href={`/${props.data.val}/${item.pk}`} replace>
                     {" "}
                     <h4 className="text-xl font-medium capitalize">
                       {item.fields.title}
-                      <p className="text-sm font-medium text-gray-400 capitalize">
-                        @ {item.fields.company_name}
-                      </p>
+                      {/* <p className="text-sm font-medium text-gray-400 capitalize">
+                        @ {item.fields.company_name.company_name}
+                      </p> */}
                     </h4>
                   </Link>
 

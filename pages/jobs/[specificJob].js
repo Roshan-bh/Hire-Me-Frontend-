@@ -5,7 +5,7 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:8000/api";
 const SpecificJob = () => {
-  const [jobDetails, setJobDetails] = useState([]);
+  const [jobDetails, setJobDetails] = useState({});
   const [jobSector, setJobSector] = useState({});
   const [jobType, setJobType] = useState({});
   const [salaryType, setSalaryType] = useState({});
@@ -26,14 +26,14 @@ const SpecificJob = () => {
     }
   }, []);
   const Data = {
-    jobDetails: jobDetails,
-    jobSector: jobSector,
-    jobType: jobType,
+    Details: jobDetails,
+    Sector: jobSector,
+    Type: jobType,
     salaryType: salaryType,
     relatedData: relatedData,
-    type: "jobs",
+    val: "jobs",
     apply: "job",
-    jobId: job_id,
+    dataId: job_id,
   };
   return (
     <div>

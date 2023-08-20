@@ -30,42 +30,39 @@ export const FeaturedJobs = () => {
       </div>
       <div className="flex items-center justify-center py-5">
         <div className="grid grid-cols-6 lg:grid-cols-12 h-auto p-2 text-center ">
-          {/* {jobData &&
+          {jobData &&
             jobData.map((item, index) => (
-              <div>
-                <motion.div
-                  className="col-span-6 mx-3 p-8 shadow-xl bg-slate-100 lg:mx-16 mb-10"
-                  whileHover={{ scale: 1.1 }}
-                  key={index}
-                >
-                  <Link
-                    href={`jobs/${item.id}`}
-                    className="cursor-pointer flex "
-                  >
-                    <div className="relative w-[100px] h-[100px]">
-                      {" "}
-                      <Image
-                        src={item.job_image}
-                        fill
-                        alt={item.title}
-                        className="p-2 shadow-md rounded-md object-contain"
-                      />
-                    </div>
+              <motion.div
+                className="col-span-6 mx-3 p-8 shadow-xl bg-slate-100 lg:mx-16 mb-10"
+                whileHover={{ scale: 1.1 }}
+                key={index}
+              >
+                <Link href={`jobs/${item.id}`} className="cursor-pointer flex ">
+                  <div className="relative w-[100px] h-[100px]">
+                    {" "}
+                    <Image
+                      src={item.job_image}
+                      fill
+                      alt={item.title}
+                      className="p-2 shadow-md rounded-md object-contain"
+                    />
+                  </div>
 
-                    <p className=" mx-3 border-l-2 border-black/30"></p>
-                    <div className="mx-5 text-left">
-                      <h2 className=" text-2xl font-semibold">
-                        {item.job_sector}
-                      </h2>
-                      <p className="text-lg font-[18px]">@ {item.title}</p>
-                      <small className="text-sm">
-                        <span>{item.exact_location}</span>
-                      </small>
-                    </div>
-                  </Link>
-                </motion.div>
-              </div>
-            ))} */}
+                  <p className=" mx-3 border-l-2 border-black/30"></p>
+                  <div className="mx-5 text-left">
+                    <h2 className=" text-2xl font-semibold">
+                      {item.job_sector.title}
+                    </h2>
+                    <p className="text-lg font-[18px]">
+                      @ {item.organization_name}
+                    </p>
+                    <small className="text-sm">
+                      <span>{item.exact_location}</span>
+                    </small>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
 
           {/* <motion.div
             className="col-span-6 p-8 mx-3 shadow-xl bg-slate-100 lg:mx-16 mb-10"
@@ -90,8 +87,7 @@ export const FeaturedJobs = () => {
                 </small>
               </div>
             </Link>
-          </motion.div>
-        */}
+          </motion.div> */}
         </div>
       </div>
     </main>
