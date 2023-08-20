@@ -6,6 +6,7 @@ const baseUrl = "http://localhost:8000/api";
 const Login = () => {
   const [candidateLoginData, setCandidateLoginData] = useState({});
   const [errMsg, setErrMsg] = useState();
+
   //set key value pairs for login details.
   const handleChange = (e) => {
     setCandidateLoginData({
@@ -28,6 +29,7 @@ const Login = () => {
             email: "",
             password: "",
           });
+          console.log(res.data);
           if (res.data.bool == true) {
             localStorage.setItem("userLoginStatus", true);
             localStorage.setItem("candidateLoginStatus", true);
@@ -46,13 +48,15 @@ const Login = () => {
   useEffect(() => {
     const userLoginStatus = localStorage.getItem("userLoginStatus");
     const candidateLoginStatus = localStorage.getItem("candidateLoginStatus");
+
     if (candidateLoginStatus == "true") {
-      window.location.href = "/dashboard";
+      window.location.href = "/dashboard/candidate";
     }
   });
   //sweetalert2 to display message
   const Swal = require("sweetalert2");
-
+  //check if candidate getting its id or not
+  // const can_id = localStorage.getItem("candidate_id");
   return (
     <main>
       <div className="mt-[120px]">

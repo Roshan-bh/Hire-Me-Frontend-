@@ -8,30 +8,32 @@ import Multiselect from "multiselect-react-dropdown";
 import countryData from "./countrydata.json";
 import axios from "axios";
 const baseUrl = "http://localhost:8000/api";
-export const PostJob = () => {
-  const [jobSectors, setJobSectors] = useState([]);
-  const [jobTypes, setJobTypes] = useState([]);
+export const PostInternship = () => {
+  const [internshipSectors, setInternshipSectors] = useState([]);
+  const [internshipTypes, setInternshipTypes] = useState([]);
   const [salaryTypes, setSalaryTypes] = useState([]);
   const [industryTypes, setIndustryTypes] = useState([]);
 
-  const [jobSelect, setJobSelect] = useState([]);
-  const [jobSector, setJobSector] = useState([]);
-  const [salaryType, setSalaryType] = useState([]);
-  const [cd, setCd] = useState();
-  const [industry, setIndustry] = useState([]);
-  const [jobData, setJobData] = useState({});
+  const [dataSelect, setDataSelect] = useState({});
+  const [internshipSector, setInternshipSector] = useState({});
+  const [salaryType, setSalaryType] = useState({});
+  const [cd, setCd] = useState({});
+  const [industry, setIndustry] = useState({});
+  const [internshipData, setInternshipData] = useState({});
+  const [company, setCompany] = useState({});
 
   useEffect(() => {
+    const employer_id = localStorage.getItem("employer_id");
     try {
       axios.get(baseUrl + "/jobsectors/").then((response) => {
-        setJobSectors(response.data);
+        setInternshipSectors(response.data);
       });
     } catch (error) {
       console.log(error);
     }
     try {
       axios.get(baseUrl + "/jobtypes/").then((response) => {
-        setJobTypes(response.data);
+        setInternshipTypes(response.data);
       });
     } catch (error) {
       console.log(error);
@@ -46,6 +48,15 @@ export const PostJob = () => {
     try {
       axios.get(baseUrl + "/industry/").then((response) => {
         setIndustryTypes(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      axios.get(baseUrl + "/employer/" + employer_id).then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          setCompany(response.data.companyProfile.company_name);
+        }
       });
     } catch (error) {
       console.log(error);
@@ -65,42 +76,52 @@ export const PostJob = () => {
     disabled: false,
   };
   const handleChange = (e) => {
-    setJobData({
-      ...jobData,
+    setInternshipData({
+      ...internshipData,
       [e.target.name]: e.target.value,
     });
   };
 
   const handleFileChange = (e) => {
-    setJobData({ ...jobData, [e.target.name]: e.target.files[0] });
+    setInternshipData({
+      ...internshipData,
+      [e.target.name]: e.target.files[0],
+    });
   };
   const employer_id = localStorage.getItem("employer_id");
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("title", jobData.title);
+    formData.append("title", internshipData.title);
     formData.append("employer", employer_id);
     formData.append("description", content);
-    formData.append("application_deadline", jobData.application_deadline);
-    formData.append("job_type", jobSelect.id);
-    formData.append("job_sector", jobSector.id);
-    formData.append("required_skills", jobData.required_skills);
+    formData.append(
+      "application_deadline",
+      internshipData.application_deadline
+    );
+    formData.append("internship_type", dataSelect.id);
+    formData.append("internship_sector", internshipSector.id);
+    formData.append("required_skills", internshipData.required_skills);
     formData.append("salary_type", salaryType.id);
-    formData.append("salary_minimum", jobData.salary_minimum);
-    formData.append("salary_maximum", jobData.salary_maximum);
-    formData.append("job_image", jobData.up_img, jobData.up_img.name);
-    formData.append("experience", jobData.experience);
-    formData.append("qualification", jobData.qualification);
+    formData.append("salary_minimum", internshipData.salary_minimum);
+    formData.append("salary_maximum", internshipData.salary_maximum);
+    formData.append(
+      "internship_image",
+      internshipData.up_img,
+      internshipData.up_img.name
+    );
+    formData.append("experience", internshipData.experience);
+    formData.append("qualification", internshipData.qualification);
     formData.append("industry", industry.id);
-    formData.append("country", cd);
-    formData.append("city", jobData.city);
-    formData.append("postal_code", jobData.postal_code);
-    formData.append("exact_location", jobData.exact_location);
+    formData.append("country", cd.title);
+    formData.append("city", internshipData.city);
+    formData.append("postal_code", internshipData.postal_code);
+    formData.append("exact_location", internshipData.exact_location);
     formData.append("terms_conditions", true);
 
     try {
       axios
-        .post(baseUrl + "/jobs/", formData, {
+        .post(baseUrl + "/internships/", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
@@ -111,6 +132,7 @@ export const PostJob = () => {
       console.log(e.data);
     }
   };
+  console.log(company);
 
   return (
     <>
@@ -120,30 +142,48 @@ export const PostJob = () => {
           <form onSubmit={handleFormSubmit}>
             <div className="shadow-md p-5">
               <h2 className="text-2xl font-medium tracking-wider mb-7">
-                Post a New Job
+                Post a New Internship
               </h2>
               <div className="mb-7">
                 <label
                   className=" text-gray-700 text-sm font-semibold mb-3"
-                  htmlFor="jobTitle"
+                  htmlFor="title"
                 >
-                  Job Title*
+                  Internship Title*
                 </label>
                 <input
                   className="shadow-md border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="jobTitle"
+                  id="title"
                   name="title"
                   type="text"
-                  placeholder="Job Title"
+                  placeholder="Internship Title"
                   onChange={handleChange}
                 />
               </div>
               <div className="mb-7">
+                {" "}
                 <label
                   className=" text-gray-700 text-sm font-semibold mb-3"
-                  htmlFor="jobDescription"
+                  htmlFor="companyName"
                 >
-                  Job Description*
+                  Company Name*
+                </label>
+                <input
+                  className="shadow-md border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="title"
+                  name="title"
+                  type="text"
+                  placeholder="Internship Title"
+                  value={company}
+                />
+              </div>
+
+              <div className="mb-7">
+                <label
+                  className=" text-gray-700 text-sm font-semibold mb-3"
+                  htmlFor="internshipDescription"
+                >
+                  Internship Description*
                 </label>
                 <JoditEditor
                   ref={editor}
@@ -151,7 +191,7 @@ export const PostJob = () => {
                   tabIndex={1}
                   config={config}
                   onchange={(newContent) => setContent(newContent)}
-                  id="jobDescription"
+                  id="internshipDescription"
                 />
               </div>
               <div className="flex w-full justify-between mb-7 space-x-2">
@@ -182,34 +222,34 @@ export const PostJob = () => {
                   {" "}
                   <label
                     className=" text-gray-700 text-sm font-semibold mb-3"
-                    htmlFor="jobType"
+                    htmlFor="internshipType"
                   >
-                    Job Type*
+                    Internship Type*
                   </label>
                   <Dropdown
-                    value={jobTypes}
-                    name={"Select Job Type"}
-                    id="jobType"
-                    setData={setJobSelect}
+                    value={internshipTypes}
+                    name={"Select Internship Type"}
+                    id="internshipType"
+                    setData={setDataSelect}
                   />
-                  {jobSelect.id}
+                  {dataSelect.id}
                 </div>
                 <div className="">
                   {" "}
                   <label
                     className=" text-gray-700 text-sm font-semibold mb-3"
-                    htmlFor="jobSector"
+                    htmlFor="internshipSector"
                   >
-                    Job Sector*
+                    Internship Sector*
                   </label>
                   <Dropdown
-                    value={jobSectors}
-                    name={"Select Job Sector"}
-                    id="jobSector"
-                    setData={setJobSector}
+                    value={internshipSectors}
+                    name={"Select Internship Sector"}
+                    id="internshipSector"
+                    setData={setInternshipSector}
                   />
                 </div>
-                {jobSector.id}
+                {internshipSector.id}
               </div>
               <div className="mb-7">
                 <label
@@ -451,7 +491,7 @@ export const PostJob = () => {
               type="submit"
               className="text-white flex mx-auto rounded-md bg-black px-4 py-2 hover:bg-black/80 mt-7"
             >
-              Post Job
+              Post Internship
             </button>
           </form>
         </div>

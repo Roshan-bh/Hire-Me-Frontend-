@@ -7,8 +7,8 @@ import { Dropdown } from "@/components/subparts/dropdown";
 import countryData from "../../../components/dashboard/countrydata.json";
 import { useRouter } from "next/router";
 import axios from "axios";
-const baseUrl = "http://localhost:8000/api";
 
+const baseUrl = "http://localhost:8000/api";
 const EditJob = () => {
   //using router to get job id from url
   const router = useRouter();

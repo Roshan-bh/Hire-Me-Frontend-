@@ -23,7 +23,7 @@ import { useRouter } from "next/router";
 
 import { DashboardSidebar } from "@/components/dashboardSidebar";
 import { CompanyProfile } from "@/components/dashboard/companyProfile";
-import { PostJob } from "@/components/dashboard/postJob";
+import { PostInternship } from "@/components/dashboard/postInternship";
 import { ManageJobs } from "@/components/dashboard/manageJobs";
 import { DeleteProfile } from "@/components/dashboard/deleteProfile";
 
@@ -45,6 +45,11 @@ const Layout = () => {
         {layout == "postJob" && (
           <div className="w-full sm:w-4/5">
             <PostJob />
+          </div>
+        )}
+        {layout == "postInternship" && (
+          <div className="w-full sm:w-4/5">
+            <PostInternship />
           </div>
         )}
         {layout == "manageJobs" && (

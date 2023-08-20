@@ -44,6 +44,7 @@ export const Dropdown = (props) => {
                 props.setData({ title: selected, id: item.id });
 
                 setSelected(item.title || item.country_name);
+                setIsOpen(false);
               }}
             >
               {item.title || item.country_name}

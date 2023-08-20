@@ -4,6 +4,9 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:8000/api";
 const Login = () => {
+  //sweetalert2 to display message
+  const Swal = require("sweetalert2");
+
   const [employerLoginData, setEmployerLoginData] = useState({});
   const [errMsg, setErrMsg] = useState();
   //set key value pairs for login details.
@@ -47,11 +50,9 @@ const Login = () => {
     const userLoginStatus = localStorage.getItem("userLoginStatus");
     const employerLoginStatus = localStorage.getItem("employerLoginStatus");
     if (employerLoginStatus == "true") {
-      window.location.href = "/dashboard";
+      window.location.href = "/dashboard/employer";
     }
   });
-  //sweetalert2 to display message
-  const Swal = require("sweetalert2");
 
   return (
     <main>

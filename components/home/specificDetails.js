@@ -5,9 +5,73 @@ import { BiMoneyWithdraw, BiUserVoice, BiHeartCircle } from "react-icons/bi";
 import { TfiEmail } from "react-icons/tfi";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
+const baseUrl = "http://localhost:8000/api";
 const SpecificDetails = (props) => {
-  console.log(props.data.relatedData);
+  //sweetalert2 to display message
+  const Swal = require("sweetalert2");
+
+  const [userLoginStatus, setUserLoginStatus] = useState();
+  const [applyStatus, setApplyStatus] = useState();
+  // console.log(props.data.relatedData);
+  const job_id = props.data.jobId;
+
+  //useEffect
+  useEffect(() => {
+    const candidate_id = localStorage.getItem("candidate_id");
+
+    //fetch apply status
+    try {
+      axios
+        .get(baseUrl + "/fetch-apply-status/" + candidate_id + "/" + 4)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.bool === "true") {
+            setApplyStatus("success");
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+
+    const candidateLoginStatus = localStorage.getItem("candidateLoginStatus");
+    if (candidateLoginStatus === "true") {
+      setUserLoginStatus("success");
+    }
+  }, []);
+
+  //handles the job aplication applying procedure.
+  const handleApplication = (e) => {
+    e.preventDefault();
+    const candidate_id = localStorage.getItem("candidate_id");
+    const formData = new FormData();
+    formData.append("job", job_id);
+    formData.append("candidate", candidate_id);
+    try {
+      axios
+        .post(baseUrl + "/candidate-job-apply/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          if (response.data.status === 200 || response.data.status === 201) {
+            Swal.fire({
+              title: "Job Applied Successfully.",
+              icon: "success",
+              toast: true,
+              time: 3000,
+              position: "top-right",
+              timerProgressBar: true,
+              showConfirmButton: false,
+            });
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <main className="mt-[82px]">
       <div className="w-screen h-[320px] bg-gray-400/60"></div>
@@ -18,6 +82,7 @@ const SpecificDetails = (props) => {
             width={150}
             height={150}
             className="shadow-sm rounded-sm"
+            alt=""
           />
         </div>
         <div className="right col-span-5 md:col-span-4 py-3 pl-9 flex flex-col justify-between space-y-4">
@@ -166,9 +231,36 @@ const SpecificDetails = (props) => {
             </div>
           </div>
           <div className="col-span-5 lg:col-span-1 p-4 shadow-xl border-2 flex flex-col justify-center max-h-[300px] items-center ">
-            <button className="text-white bg-green-700 text-md font-medium rounded-md hover:bg-green-600 flex mx-auto px-4 py-3">
-              Login to Apply
-            </button>
+            {userLoginStatus === "success" && applyStatus !== "success" && (
+              <button
+                className="text-white bg-green-700 text-md font-medium rounded-md hover:bg-green-600 flex mx-auto px-4 py-3"
+                type="button"
+                onClick={handleApplication}
+              >
+                Apply on a {props.data.apply}
+              </button>
+            )}
+
+            {userLoginStatus === "success" && applyStatus === "success" && (
+              <button
+                className="text-white bg-green-700 text-md font-medium rounded-md hover:bg-green-600 flex mx-auto px-4 py-3"
+                type="button"
+              >
+                Applied Successfully
+              </button>
+            )}
+
+            {userLoginStatus !== "success" && (
+              <Link href="/candidate/login">
+                <button
+                  className="text-white bg-green-700 text-md font-medium rounded-md hover:bg-green-600 flex mx-auto px-4 py-3"
+                  type="button"
+                >
+                  Login to Apply
+                </button>{" "}
+              </Link>
+            )}
+
             <p className="text-center text-red-500 font-semibold text-md mt-1">
               Application ends in 9days 23hrs 25min
             </p>

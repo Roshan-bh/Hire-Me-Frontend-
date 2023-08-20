@@ -13,7 +13,7 @@ import axios from "axios";
 const baseUrl = "http://localhost:8000/api";
 export const DashboardSidebar = () => {
   const Swal = require("sweetalert2");
-  const [empName, setEmpName] = useState({});
+  const [canName, setCanName] = useState({});
   const handleLogout = () => {
     Swal.fire({
       title: "Confirm",
@@ -25,27 +25,28 @@ export const DashboardSidebar = () => {
     localStorage.removeItem("userLoginStatus");
     localStorage.removeItem("employerLoginStatus");
     localStorage.removeItem("candidateLoginStatus");
-    localStorage.removeItem("employer_id");
-    localStorage.removeItem("employer_name");
-    window.location.href = "/employer/login";
+    localStorage.removeItem("candidate_id");
+    localStorage.removeItem("candidate_name");
+    window.location.href = "/candidate/login";
   };
   useEffect(() => {
-    const employer_id = localStorage.getItem("employer_id");
+    const candidate_id = localStorage.getItem("candidate_id");
     try {
-      axios.get(baseUrl + "/employer/" + employer_id).then((response) => {
-        setEmpName(response.data);
+      axios.get(baseUrl + "/candidate/" + candidate_id).then((response) => {
+        setCanName(response.data);
       });
       if (res.status == 200 || res.status == 201) {
         localStorage.setItem(
-          "employer_name",
-          empName.first_name + " " + empName.last_name
+          "candidate_name",
+          canName.first_name + " " + canName.last_name
         );
       }
     } catch (error) {
       console.log(error);
     }
   }, []);
-  console.log(empName);
+  console.log(canName);
+  // const candidate_name = localStorage.getItem("candidate_name");
 
   return (
     <>
@@ -65,15 +66,15 @@ export const DashboardSidebar = () => {
                 />
                 <div>
                   <h2 className="font-medium text-center text-teal-500">
-                    {empName.first_name + " " + empName.last_name}
+                    {canName.first_name + " " + canName.last_name}
                   </h2>
-                  <p className="text-xs text-gray-500 text-center">Employer</p>
+                  <p className="text-xs text-gray-500 text-center">Candidate</p>
                 </div>
               </div>
               <div id="menu" className="flex flex-col space-y-2">
                 <Link
                   // href={{ pathname: "/dashboard" }}
-                  href="/dashboard/employer"
+                  href="/dashboard/candidate"
                   replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out"
                 >
@@ -87,63 +88,63 @@ export const DashboardSidebar = () => {
                   //   pathname: "/dashboard/[layout]",
                   //   query: { layout: "companyProfile" },
                   // }}
-                  href="/dashboard/employer/companyProfile"
+                  href="/dashboard/candidate/appliedJobs"
                   replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
                 >
                   <span>
                     <ImProfile className="inline-block text-2xl mr-1 pb-1" />
                   </span>
-                  <span className="">Company Profile</span>
+                  <span className="">Applied Jobs</span>
                 </Link>
                 <Link
                   // href={{
                   //   pathname: "/dashboard/[layout]",
                   //   query: { layout: "postJob" },
                   // }}
-                  href="/dashboard/employer/postJob"
+                  href="/dashboard/candidate/appliedInternships"
                   replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
                 >
                   <span>
                     <BiAddToQueue className="inline-block text-3xl mr-1 pb-1 -ms-1" />
                   </span>
-                  <span className="">Post a New Job</span>
-                </Link>
-                <Link
-                  // href={{
-                  //   pathname: "/dashboard/[layout]",
-                  //   query: { layout: "postJob" },
-                  // }}
-                  href="/dashboard/employer/postInternship"
-                  replace
-                  className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
-                >
-                  <span>
-                    <BiAddToQueue className="inline-block text-3xl mr-1 pb-1 -ms-1" />
-                  </span>
-                  <span className="">Post a New Internship</span>
+                  <span className="">Applied Internships</span>
                 </Link>
                 <Link
                   // href={{
                   //   pathname: "/dashboard/[layout]",
                   //   query: { layout: "manageJobs" },
                   // }}
-                  href="/dashboard/employer/manageJobs"
+                  href="/dashboard/candidate/changePassword"
                   replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
                 >
                   <span>
                     <BsPersonWorkspace className="inline-block text-2xl mr-1 pb-1" />
                   </span>
-                  <span className="">Manage Jobs</span>
+                  <span className="">Change Password</span>
+                </Link>
+                <Link
+                  // href={{
+                  //   pathname: "/dashboard/[layout]",
+                  //   query: { layout: "companyProfile" },
+                  // }}
+                  href="/dashboard/candidate/profileSetting"
+                  replace
+                  className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
+                >
+                  <span>
+                    <ImProfile className="inline-block text-2xl mr-1 pb-1" />
+                  </span>
+                  <span className="">Profile Setting</span>
                 </Link>
                 <Link
                   // href={{
                   //   pathname: "/dashboard/[layout]",
                   //   query: { layout: "deleteProfile" },
                   // }}
-                  href="/dashboard/employer/deleteProfile"
+                  href="/dashboard/candidate/deleteProfile"
                   replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
                 >

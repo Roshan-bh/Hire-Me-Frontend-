@@ -11,10 +11,10 @@ const SpecificJob = () => {
   const [salaryType, setSalaryType] = useState({});
   const [relatedData, setRelatedData] = useState([]);
   const router = useRouter();
-  const id = router.query.specificJob;
+  const job_id = router.query.specificJob;
   useEffect(() => {
     try {
-      axios.get(baseUrl + `/jobs/4`).then((response) => {
+      axios.get(baseUrl + "/jobs/" + 4).then((response) => {
         setJobDetails(response.data);
         setJobSector(response.data.job_sector);
         setJobType(response.data.job_type);
@@ -32,6 +32,8 @@ const SpecificJob = () => {
     salaryType: salaryType,
     relatedData: relatedData,
     type: "jobs",
+    apply: "job",
+    jobId: job_id,
   };
   return (
     <div>

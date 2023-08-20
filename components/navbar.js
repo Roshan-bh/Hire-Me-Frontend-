@@ -218,7 +218,7 @@ export const Navbar = () => {
                       onClick={() => setSignupOpen((prev) => !prev)}
                     >
                       <Link
-                        href="/dashboard"
+                        href="/dashboard/employer/"
                         replace
                         // href={{
                         //   pathname: "/employer/[layout]",
@@ -236,7 +236,7 @@ export const Navbar = () => {
                       onClick={() => setSignupOpen((prev) => !prev)}
                     >
                       <Link
-                        href="/dashboard"
+                        href="/dashboard/candidate/"
                         replace
                         // href={{
                         //   pathname: "/candidate/[layout]",
