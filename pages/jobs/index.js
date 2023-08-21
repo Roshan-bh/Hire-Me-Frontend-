@@ -15,7 +15,7 @@ const JobList = () => {
     }
   }, []);
   const data = {
-    value: "job",
+    value: "jobs",
     fetchedData: jobData,
   };
   return (

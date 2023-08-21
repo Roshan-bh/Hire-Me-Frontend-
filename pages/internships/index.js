@@ -15,7 +15,7 @@ const InternshipList = () => {
     }
   }, []);
   const data = {
-    value: "internship",
+    value: "internships",
     fetchedData: internshipData,
   };
   return (

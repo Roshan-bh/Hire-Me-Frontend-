@@ -13,43 +13,41 @@ const SpecificDetails = (props) => {
   const Swal = require("sweetalert2");
 
   const [userLoginStatus, setUserLoginStatus] = useState();
+  const [candidateLoginStatus, setCandidateLoginStatus] = useState();
   const [applyStatus, setApplyStatus] = useState();
   // console.log(props.data.relatedData);
   const data_id = props.data.dataId;
   const apply = props.data.apply;
-  if (typeof window !== "undefined") {
-    // Perform localStorage action
-    const candidate_id = localStorage.getItem("candidate_id");
-  }
 
   //useEffect
   useEffect(() => {
-    // const candidate_id = localStorage.getItem("candidate_id");
+    const candidate_id = localStorage.getItem("candidate_id");
+    if (candidate_id) {
+      const user_id = candidate_id;
+    }
+    const employerLoginStatus = localStorage.getItem("employerLoginStatus");
     //fetch apply status
-    try {
-      axios
-        .get(
-          baseUrl +
-            "/fetch-apply-status-" +
-            apply +
-            "/" +
-            candidate_id +
-            "/" +
-            2
-        )
-        .then((response) => {
-          console.log(response.data);
-          if (response.data.bool === "true") {
-            setApplyStatus("success");
-          }
-        });
-    } catch (error) {
-      console.log(error);
+    if (candidate_id) {
+      try {
+        axios
+          .get(
+            baseUrl + "/fetch-apply-status-" + apply + "/" + user_id + "/" + 2
+          )
+          .then((response) => {
+            console.log(response.data);
+            if (response.data.bool === "true") {
+              setApplyStatus("success");
+            }
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     const candidateLoginStatus = localStorage.getItem("candidateLoginStatus");
     if (candidateLoginStatus === "true") {
       setUserLoginStatus("success");
+      setCandidateLoginStatus("true");
     }
   }, []);
 
@@ -91,7 +89,11 @@ const SpecificDetails = (props) => {
       <div className="-mt-32 grid grid-cols-5 md:border-2 md:border-solid shadow-xl mx-[80px] md:mx-[140px] lg:mx-[130px] divide-x divide-black/50  bg-white">
         <div className="left col-span-5  lg:col-span-1 p-9 flex items-center justify-center">
           <Image
-            src={item.job_image ? item.job_image : item.internship_image}
+            src={
+              props.data.Details.job_image
+                ? props.data.Details.job_image
+                : props.data.Details.internship_image
+            }
             width={150}
             height={150}
             className="shadow-sm rounded-sm"
@@ -241,44 +243,46 @@ const SpecificDetails = (props) => {
               </div>
             </div>
           </div>
-          <div className="col-span-5 lg:col-span-1 p-4 shadow-xl border-2 flex flex-col justify-center max-h-[300px] items-center ">
-            {userLoginStatus === "success" && applyStatus !== "success" && (
-              <button
-                className="text-white bg-green-700 text-md font-medium rounded-md hover:bg-green-600 flex mx-auto px-4 py-3"
-                type="button"
-                onClick={handleApplication}
-              >
-                Apply on a {props.data.apply}
-              </button>
-            )}
+          {candidateLoginStatus === "true" && (
+            <div className="col-span-5 lg:col-span-1 p-4 shadow-xl border-2 flex flex-col justify-center max-h-[300px] items-center ">
+              {userLoginStatus === "success" && applyStatus !== "success" && (
+                <button
+                  className="text-white bg-green-700 text-md font-medium rounded-md hover:bg-green-600 flex mx-auto px-4 py-3"
+                  type="button"
+                  onClick={handleApplication}
+                >
+                  Apply on a {props.data.apply}
+                </button>
+              )}
 
-            {userLoginStatus === "success" && applyStatus === "success" && (
-              <button
-                className="text-white bg-green-700 text-md font-medium rounded-md hover:bg-green-600 flex mx-auto px-4 py-3"
-                type="button"
-              >
-                Applied Successfully
-              </button>
-            )}
-
-            {userLoginStatus !== "success" && (
-              <Link href="/candidate/login">
+              {userLoginStatus === "success" && applyStatus === "success" && (
                 <button
                   className="text-white bg-green-700 text-md font-medium rounded-md hover:bg-green-600 flex mx-auto px-4 py-3"
                   type="button"
                 >
-                  Login to Apply
-                </button>{" "}
-              </Link>
-            )}
+                  Applied Successfully
+                </button>
+              )}
 
-            <p className="text-center text-red-500 font-semibold text-md mt-1">
-              Application ends in 9days 23hrs 25min
-            </p>
-            <button className="text-white bg-lime-600 text-md font-medium rounded-md hover:bg-lime-500 py-3 px-4 mt-11 flex">
-              <span className="">Contact Employer</span>
-            </button>
-          </div>
+              {userLoginStatus !== "success" && (
+                <Link href="/candidate/login">
+                  <button
+                    className="text-white bg-green-700 text-md font-medium rounded-md hover:bg-green-600 flex mx-auto px-4 py-3"
+                    type="button"
+                  >
+                    Login to Apply
+                  </button>{" "}
+                </Link>
+              )}
+
+              <p className="text-center text-red-500 font-semibold text-md mt-1">
+                Application ends in 9days 23hrs 25min
+              </p>
+              <button className="text-white bg-lime-600 text-md font-medium rounded-md hover:bg-lime-500 py-3 px-4 mt-11 flex">
+                <span className="">Contact Employer</span>
+              </button>
+            </div>
+          )}
           <h2 className="text-2xl font-semibold capitalize col-span-5 mt-14">
             Other jobs you May Like
           </h2>
