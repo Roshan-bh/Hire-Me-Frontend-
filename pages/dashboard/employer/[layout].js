@@ -2,30 +2,12 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
-// const DashboardSidebar = dynamic(
-//   () => import("@/components/dashboardSidebar"),
-//   { ssr: false }
-// );
-// const CompanyProfile = dynamic(
-//   () => import("@/components/dashboard/companyProfile"),
-//   { ssr: false }
-// );
-// const PostJob = dynamic(() => import("@/components/dashboard/postJob"), {
-//   ssr: false,
-// });
-// const ManageJobs = dynamic(() => import("@/components/dashboard/manageJobs"), {
-//   ssr: false,
-// });
-// const DeleteProfile = dynamic(
-//   () => import("@/components/dashboard/deleteProfile"),
-//   { ssr: false }
-// );
-
 import { DashboardSidebar } from "@/components/dashboardSidebar";
 import { CompanyProfile } from "@/components/dashboard/companyProfile";
 import { PostInternship } from "@/components/dashboard/postInternship";
 import { ManageJobs } from "@/components/dashboard/manageJobs";
 import { DeleteProfile } from "@/components/dashboard/deleteProfile";
+import { ChangePassword } from "@/components/dashboard/changePassword";
 
 const Layout = () => {
   const router = useRouter();
@@ -36,7 +18,11 @@ const Layout = () => {
         <div>
           <DashboardSidebar />
         </div>
-
+        {layout == "changePassword" && (
+          <div className="px-5">
+            <ChangePassword />
+          </div>
+        )}
         {layout == "companyProfile" && (
           <div className="px-5">
             <CompanyProfile />

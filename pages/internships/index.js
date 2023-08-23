@@ -14,6 +14,7 @@ const InternshipList = () => {
       console.log(error);
     }
   }, []);
+
   const data = {
     value: "internships",
     fetchedData: internshipData,

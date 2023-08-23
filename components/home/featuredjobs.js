@@ -10,7 +10,7 @@ export const FeaturedJobs = () => {
   useEffect(() => {
     try {
       axios.get(baseUrl + "/jobs/?result=4").then((response) => {
-        setJobData(response.data);
+        setJobData(response.data.results);
       });
     } catch (error) {
       console.log(error);

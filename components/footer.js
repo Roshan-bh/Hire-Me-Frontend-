@@ -133,7 +133,7 @@ export const Footer = () => {
                 className="text-gray-600 ml-1"
                 target="_blank"
               >
-                @Roshan Bhandary
+                @Roshan Bhandary || @Dipendra Raj Sapkota
               </Link>
             </p>
             <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">

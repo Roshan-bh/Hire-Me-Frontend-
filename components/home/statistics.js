@@ -68,7 +68,7 @@ export const Statistics = () => {
             <FaSuitcase className="text-yellow-700/70" />
           </span>
           <span className="text-4xl lg:text-6xl font-semibold">
-            <AnimateNumbers value={internshipsNumber.length} />+
+            <AnimateNumbers value={internshipsNumber.count} />+
           </span>
           <h1 className="text-lg lg:text-2xl font-medium">
             Internships Available
@@ -79,7 +79,7 @@ export const Statistics = () => {
             <FaNetworkWired className="text-yellow-700/70" />
           </span>
           <span className="text-4xl lg:text-6xl font-semibold">
-            <AnimateNumbers value={jobsNumber.length} />+
+            <AnimateNumbers value={jobsNumber.count} />+
           </span>
           <h1 className="text-lg lg:text-2xl font-medium">Jobs On Queue</h1>
         </div>

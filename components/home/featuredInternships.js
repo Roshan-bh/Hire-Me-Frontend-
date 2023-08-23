@@ -10,7 +10,7 @@ export const FeaturedInternships = () => {
   useEffect(() => {
     try {
       axios.get(baseUrl + "/internships/?result=4").then((response) => {
-        setInternshipData(response.data);
+        setInternshipData(response.data.results);
       });
     } catch (error) {
       console.log(error);
@@ -35,6 +35,7 @@ export const FeaturedInternships = () => {
               <motion.div
                 className="col-span-6 mx-3 p-8 shadow-xl bg-slate-100 lg:mx-16 mb-10"
                 whileHover={{ scale: 1.1 }}
+                key={index}
               >
                 <Link
                   href={`internships/${item.id}`}

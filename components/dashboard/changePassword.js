@@ -8,15 +8,15 @@ const baseUrl = "http://localhost:8000/api";
 export const ChangePassword = () => {
   const Swal = require("sweetalert2");
   const [hidePassword, sethidePassword] = useState();
-  const [candidateData, setCandidateData] = useState({});
+  const [empData, setEmpData] = useState({});
   const [changePass, setChangePass] = useState({});
-  const [candidateId, setCandidateId] = useState();
+  const [employerId, setEmployerId] = useState();
   useEffect(() => {
-    const candidate_id = localStorage.getItem("candidate_id");
-    setCandidateId(candidate_id);
+    const employer_id = localStorage.getItem("employer_id");
+    setEmployerId(employer_id);
     try {
-      axios.get(baseUrl + "/candidate/" + candidate_id).then((response) => {
-        setCandidateData(response.data);
+      axios.get(baseUrl + "/employer/" + employer_id).then((response) => {
+        setEmpData(response.data);
       });
     } catch (error) {
       console.log(error);
@@ -28,20 +28,20 @@ export const ChangePassword = () => {
       [event.target.name]: event.target.value,
     });
   };
-  console.log(candidateId);
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("password", changePass.new_password);
     formData.append("confirm_password", changePass.confirm_password);
     const entered_current_password = changePass.current_password;
-    const fetched_current_password = candidateData.password;
+    const fetched_current_password = empData.password;
     console.log(entered_current_password);
 
     if (entered_current_password == fetched_current_password) {
       try {
         axios
-          .post(baseUrl + "/candidate-change-password/" + candidateId, formData)
+          .post(baseUrl + "/employer-change-password/" + employerId, formData)
           .then((response) => {
             if (response.status === 200 || response.status === 201) {
               Swal.fire({
@@ -53,7 +53,7 @@ export const ChangePassword = () => {
                 timeProgressBar: true,
                 showConfirmButton: false,
               });
-              window.location.href = "/dashboard/candidate/login";
+              window.location.href = "/dashboard/employer/login";
             }
           });
       } catch (error) {
@@ -71,7 +71,7 @@ export const ChangePassword = () => {
       });
     }
   };
-  console.log(candidateData);
+  console.log(empData);
   return (
     <>
       <div className="mt-5 px-5 md:px-0  md:mt-[105px] w-full">
@@ -183,7 +183,7 @@ export const ChangePassword = () => {
             >
               change password
             </button>
-            <Link href="/dashboard/candidate">
+            <Link href="/dashboard/employer">
               <button
                 type="button"
                 className="px-4 py-3 bg-teal-500 text-white rounded-md mt-4 hover:bg-teal-700"

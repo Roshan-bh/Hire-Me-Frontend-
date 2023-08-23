@@ -14,6 +14,7 @@ const JobList = () => {
       console.log(error);
     }
   }, []);
+
   const data = {
     value: "jobs",
     fetchedData: jobData,

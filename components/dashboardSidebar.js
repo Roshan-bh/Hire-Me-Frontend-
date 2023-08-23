@@ -83,10 +83,16 @@ export const DashboardSidebar = () => {
                   <span className="">Dashboard</span>
                 </Link>
                 <Link
-                  // href={{
-                  //   pathname: "/dashboard/[layout]",
-                  //   query: { layout: "companyProfile" },
-                  // }}
+                  href="/dashboard/employer/changePassword"
+                  replace
+                  className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
+                >
+                  <span>
+                    <BsPersonWorkspace className="inline-block text-2xl mr-1 pb-1" />
+                  </span>
+                  <span className="">Change Password</span>
+                </Link>
+                <Link
                   href="/dashboard/employer/companyProfile"
                   replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
@@ -97,10 +103,6 @@ export const DashboardSidebar = () => {
                   <span className="">Company Profile</span>
                 </Link>
                 <Link
-                  // href={{
-                  //   pathname: "/dashboard/[layout]",
-                  //   query: { layout: "postJob" },
-                  // }}
                   href="/dashboard/employer/postJob"
                   replace
                   className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"
