@@ -38,26 +38,38 @@ export const ChangePassword = () => {
     const fetched_current_password = empData.password;
     console.log(entered_current_password);
 
-    if (entered_current_password == fetched_current_password) {
-      try {
-        axios
-          .post(baseUrl + "/employer-change-password/" + employerId, formData)
-          .then((response) => {
-            if (response.status === 200 || response.status === 201) {
-              Swal.fire({
-                title: "Password Changed Successfully",
-                icon: "success",
-                toast: true,
-                timer: 3000,
-                position: "top-right",
-                timeProgressBar: true,
-                showConfirmButton: false,
-              });
-              window.location.href = "/dashboard/employer/login";
-            }
-          });
-      } catch (error) {
-        console.log(error);
+    if (entered_current_password === fetched_current_password) {
+      if (changePass.new_password === changePass.confirm_password) {
+        try {
+          axios
+            .post(baseUrl + "/employer-change-password/" + employerId, formData)
+            .then((response) => {
+              if (response.status === 200 || response.status === 201) {
+                Swal.fire({
+                  title: "Password Changed Successfully",
+                  icon: "success",
+                  toast: true,
+                  timer: 3000,
+                  position: "top-right",
+                  timeProgressBar: true,
+                  showConfirmButton: false,
+                });
+                window.location.href = "/dashboard/employer/login";
+              }
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        Swal.fire({
+          title: "new password and confirm password must be same.",
+          icon: "error",
+          toast: true,
+          timer: 3000,
+          position: "top-right",
+          timeProgressBar: true,
+          showConfirmButton: false,
+        });
       }
     } else {
       Swal.fire({
